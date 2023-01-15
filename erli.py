@@ -129,10 +129,11 @@ class ErliAlgorithm:
         """
         if not situation.after_marker:
             for situation_to_show in self.lists[situation.list_index]:
-                self.lists[current_list_index].append(Situation(non_terminal=situation_to_show.non_terminal,
-                                                                current_pos=situation_to_show.current_pos+1,
-                                                                body=situation_to_show.body,
-                                                                list_index=situation_to_show.list_index))
+                if situation_to_show.after_marker == situation.non_terminal:
+                    self.lists[current_list_index].append(Situation(non_terminal=situation_to_show.non_terminal,
+                                                                    current_pos=situation_to_show.current_pos+1,
+                                                                    body=situation_to_show.body,
+                                                                    list_index=situation_to_show.list_index))
             return True
         return False
 
@@ -169,7 +170,7 @@ class ErliAlgorithm:
         :return:
         """
         if current_list_index == len(self.word):
-            if not situation.list_index and not situation.after_marker\
-                    and situation.is_terminal(situation.before_marker):
+            if not situation.list_index and not situation.after_marker \
+                    and situation.non_terminal == self.axiom.non_terminal:
                 return True
         return False
